@@ -34,7 +34,7 @@ color calculate_ambient(color alight, double *areflect ) {
   a.green = alight.green * areflect[1];
   a.blue = alight.blue * areflect[2];
 
-  limit_color( &a );
+  //limit_color( &a );
   
   return a;
 }
@@ -49,30 +49,35 @@ color calculate_diffuse(double light[2][3], double *dreflect, double *normal ) {
   d.green = light[COLOR][GREEN] * dreflect[1] * dot;
   d.blue = light[COLOR][BLUE] * dreflect[2] * dot;
 
-  limit_color( &d );
+  //limit_color( &d );
   
   return d;
 }
 
 color calculate_specular(double light[2][3], double *sreflect, double *view, double *normal ) {
   color s;
-  double * r = normal;
   double td = 2 * dot_product(normal, light[LOCATION]);
 
-  r[0] = r[0] * td - light[LOCATION][0];
-  r[1] = r[1] * td - light[LOCATION][1];
-  r[2] = r[2] * td - light[LOCATION][2];
+  normal[0] *= td;
+  normal[1] *= td;
+  normal[2] *= td;
+
+  double * r = normal;
+
+  r[0] -= light[LOCATION][0];
+  r[1] -= light[LOCATION][1];
+  r[2] -= light[LOCATION][2];
 
   double dp = dot_product( r, view );
 
-  dp = dp > 0 ? 0 : dp;
+  dp = dp > 0 ? dp : 0;
   dp = pow(dp, SPECULAR_EXP);
 
   s.red = light[COLOR][RED] * sreflect[0] * dp;
   s.green = light[COLOR][GREEN] * sreflect[1] * dp;
   s.blue = light[COLOR][BLUE] * sreflect[2] * dp;
 
-  limit_color( &s );
+  //limit_color( &s );
 
   return s;
 }
@@ -111,7 +116,7 @@ void normalize( double *vector ) {
 
 //Return the dot porduct of a . b
 double dot_product( double *a, double *b ) {
-  return (a[0] * b[0]) + (a[1] * b[1]) + (a[2] + b[2]);
+  return (a[0] * b[0]) + (a[1] * b[1]) + (a[2] * b[2]);
 }
 
 double *calculate_normal(struct matrix *polygons, int i) {
