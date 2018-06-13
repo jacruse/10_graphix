@@ -110,8 +110,8 @@ void parse_file ( char * filename,
     double theta;
     char axis;
     int type;
-    int step = 100;
-    int step_3d = 10;
+    int step = 250;
+    int step_3d = 50;
 
     if ( strncmp(line, "push", strlen(line)) == 0 ) {
       //printf("PUSH\b");

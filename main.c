@@ -24,8 +24,8 @@ int main(int argc, char **argv) {
   ambient.green = 50;
   ambient.blue = 50;
 
-  light[LOCATION][0] = 0.5;
-  light[LOCATION][1] = 0.75;
+  light[LOCATION][0] = .5;
+  light[LOCATION][1] = .75;
   light[LOCATION][2] = 1;
 
   light[COLOR][RED] = 0;
